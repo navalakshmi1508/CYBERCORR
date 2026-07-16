@@ -44,6 +44,17 @@ export function setAuthTokenGetter(getter: AuthTokenGetter | null): void {
   _authTokenGetter = getter;
 }
 
+// Ensure token from localStorage is fetched automatically
+setAuthTokenGetter(() => {
+  try {
+    const user = localStorage.getItem('cybernexus_user');
+    if (user) {
+      return JSON.parse(user).token;
+    }
+  } catch (e) {}
+  return null;
+});
+
 function isRequest(input: RequestInfo | URL): input is Request {
   return typeof Request !== "undefined" && input instanceof Request;
 }

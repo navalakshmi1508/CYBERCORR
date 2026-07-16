@@ -3,20 +3,37 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: CyberNexus AI - Cybersecurity Telemetry & Fraud Intelligence Platform
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: dashboard
+    description: Dashboard summaries
+  - name: telemetry
+    description: Cybersecurity telemetry events
+  - name: transactions
+    description: Financial transactions
+  - name: alerts
+    description: Correlated threat alerts
+  - name: correlations
+    description: AI correlation engine
+  - name: quantum
+    description: Quantum risk monitoring
+  - name: notifications
+    description: User notifications
+  - name: users
+    description: User management
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +41,505 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout current user
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current authenticated user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get full dashboard summary with stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/risk-score:
+    get:
+      operationId: getRiskScore
+      tags: [dashboard]
+      summary: Get overall organization risk score
+      responses:
+        "200":
+          description: Risk score with breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskScore"
+
+  /dashboard/activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent activity feed
+      responses:
+        "200":
+          description: Recent activity items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /telemetry/events:
+    get:
+      operationId: getTelemetryEvents
+      tags: [telemetry]
+      summary: List cybersecurity telemetry events
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: List of telemetry events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TelemetryEvent"
+
+  /telemetry/events/{id}:
+    get:
+      operationId: getTelemetryEvent
+      tags: [telemetry]
+      summary: Get a specific telemetry event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Telemetry event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TelemetryEvent"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /telemetry/summary:
+    get:
+      operationId: getTelemetrySummary
+      tags: [telemetry]
+      summary: Get telemetry statistics by category
+      responses:
+        "200":
+          description: Telemetry aggregated stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TelemetrySummary"
+
+  /transactions:
+    get:
+      operationId: getTransactions
+      tags: [transactions]
+      summary: List transactions (role-filtered)
+      parameters:
+        - name: anomalyOnly
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+
+  /transactions/{id}:
+    get:
+      operationId: getTransaction
+      tags: [transactions]
+      summary: Get a specific transaction with AI explanation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Transaction with explanation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /transactions/anomalies:
+    get:
+      operationId: getTransactionAnomalies
+      tags: [transactions]
+      summary: Get anomalous transactions with risk breakdown
+      responses:
+        "200":
+          description: Anomalous transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+
+  /alerts:
+    get:
+      operationId: getAlerts
+      tags: [alerts]
+      summary: List correlated threat alerts (role-filtered)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, true_positive, false_positive, resolved]
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alert"
+
+  /alerts/stats:
+    get:
+      operationId: getAlertStats
+      tags: [alerts]
+      summary: Get alert statistics and trend data
+      responses:
+        "200":
+          description: Alert stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertStats"
+
+  /alerts/{id}:
+    get:
+      operationId: getAlert
+      tags: [alerts]
+      summary: Get a specific alert with full XAI explanation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Alert with explanation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /alerts/{id}/feedback:
+    patch:
+      operationId: submitAlertFeedback
+      tags: [alerts]
+      summary: Analyst submits TP/FP feedback for an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertFeedbackInput"
+      responses:
+        "200":
+          description: Updated alert
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alert"
+        "403":
+          description: Forbidden - analysts only
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /correlations:
+    get:
+      operationId: getCorrelations
+      tags: [correlations]
+      summary: List AI correlation events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: List of correlations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Correlation"
+
+  /correlations/{id}:
+    get:
+      operationId: getCorrelation
+      tags: [correlations]
+      summary: Get a specific correlation with XAI explanation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Correlation with explanation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CorrelationDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /correlations/graph:
+    get:
+      operationId: getCorrelationGraph
+      tags: [correlations]
+      summary: Get graph data for 3D GNN visualization
+      responses:
+        "200":
+          description: Graph node and edge data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphData"
+
+  /quantum/risks:
+    get:
+      operationId: getQuantumRisks
+      tags: [quantum]
+      summary: List quantum risk indicators
+      responses:
+        "200":
+          description: Quantum risk indicators
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QuantumRisk"
+
+  /quantum/simulation:
+    get:
+      operationId: getQuantumSimulation
+      tags: [quantum]
+      summary: Get quantum attack simulation results
+      responses:
+        "200":
+          description: Simulation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuantumSimulation"
+
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [notifications]
+      summary: Get current user notifications
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}/read:
+    patch:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark a notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated notification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /users:
+    get:
+      operationId: getUsers
+      tags: [users]
+      summary: List all users (admin/analyst only)
+      responses:
+        "200":
+          description: Users list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +547,567 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, analyst, user]
+        department:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+      required: [id, email, name, role, createdAt]
+
+    RegisterInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        name:
+          type: string
+        role:
+          type: string
+          enum: [analyst, user]
+        department:
+          type: string
+      required: [email, password, name]
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required: [email, password]
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required: [token, user]
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalAlerts:
+          type: integer
+        criticalAlerts:
+          type: integer
+        openAlerts:
+          type: integer
+        resolvedToday:
+          type: integer
+        riskScore:
+          type: number
+        threatsByCategory:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        alertTrend:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendPoint"
+        topThreats:
+          type: array
+          items:
+            $ref: "#/components/schemas/Alert"
+        recentTransactionAnomalies:
+          type: integer
+        quantumRiskLevel:
+          type: string
+          enum: [low, moderate, elevated, critical]
+        falsePositiveRate:
+          type: number
+        avgResolutionMinutes:
+          type: number
+      required:
+        - totalAlerts
+        - criticalAlerts
+        - openAlerts
+        - resolvedToday
+        - riskScore
+        - threatsByCategory
+        - alertTrend
+        - topThreats
+        - recentTransactionAnomalies
+        - quantumRiskLevel
+        - falsePositiveRate
+        - avgResolutionMinutes
+
+    CategoryCount:
+      type: object
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
+        percentage:
+          type: number
+      required: [category, count, percentage]
+
+    TrendPoint:
+      type: object
+      properties:
+        date:
+          type: string
+        alerts:
+          type: integer
+        resolved:
+          type: integer
+      required: [date, alerts, resolved]
+
+    RiskScore:
+      type: object
+      properties:
+        overall:
+          type: number
+        cyber:
+          type: number
+        fraud:
+          type: number
+        quantum:
+          type: number
+        trend:
+          type: string
+          enum: [improving, stable, worsening]
+        lastUpdated:
+          type: string
+      required: [overall, cyber, fraud, quantum, trend, lastUpdated]
+
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [alert_created, alert_resolved, feedback_submitted, user_login, anomaly_detected, quantum_risk_flagged]
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: ["string", "null"]
+        timestamp:
+          type: string
+      required: [id, type, title, description, timestamp]
+
+    TelemetryEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventType:
+          type: string
+          enum: [login_attempt, network_anomaly, endpoint_alert, certificate_anomaly, privilege_escalation, lateral_movement, data_exfiltration]
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        sourceIp:
+          type: string
+        destinationIp:
+          type: ["string", "null"]
+        userId:
+          type: ["integer", "null"]
+        deviceId:
+          type: ["string", "null"]
+        description:
+          type: string
+        timestamp:
+          type: string
+        isCorrelated:
+          type: boolean
+      required: [id, eventType, severity, sourceIp, description, timestamp, isCorrelated]
+
+    TelemetrySummary:
+      type: object
+      properties:
+        byType:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        bySeverity:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        totalLast24h:
+          type: integer
+        avgPerHour:
+          type: number
+      required: [byType, bySeverity, totalLast24h, avgPerHour]
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        accountId:
+          type: string
+        transactionType:
+          type: string
+          enum: [transfer, withdrawal, deposit, payment, wire]
+        amount:
+          type: number
+        currency:
+          type: string
+        merchantName:
+          type: ["string", "null"]
+        merchantCategory:
+          type: ["string", "null"]
+        riskScore:
+          type: number
+        isAnomaly:
+          type: boolean
+        anomalyReasons:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [approved, flagged, blocked, under_review]
+        timestamp:
+          type: string
+      required: [id, userId, accountId, transactionType, amount, currency, riskScore, isAnomaly, anomalyReasons, status, timestamp]
+
+    TransactionDetail:
+      type: object
+      properties:
+        transaction:
+          $ref: "#/components/schemas/Transaction"
+        xaiExplanation:
+          $ref: "#/components/schemas/XAIExplanation"
+        relatedAlerts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Alert"
+        relatedTelemetry:
+          type: array
+          items:
+            $ref: "#/components/schemas/TelemetryEvent"
+      required: [transaction, xaiExplanation, relatedAlerts, relatedTelemetry]
+
+    Alert:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        category:
+          type: string
+          enum: [fraud, cyber_threat, quantum_risk, insider_threat, data_breach, account_takeover]
+        status:
+          type: string
+          enum: [open, true_positive, false_positive, resolved]
+        riskScore:
+          type: number
+        affectedUserId:
+          type: ["integer", "null"]
+        affectedAccountId:
+          type: ["string", "null"]
+        analystId:
+          type: ["integer", "null"]
+        analystNote:
+          type: ["string", "null"]
+        telemetryEventIds:
+          type: array
+          items:
+            type: integer
+        transactionIds:
+          type: array
+          items:
+            type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required: [id, title, description, severity, category, status, riskScore, telemetryEventIds, transactionIds, createdAt, updatedAt]
+
+    AlertDetail:
+      type: object
+      properties:
+        alert:
+          $ref: "#/components/schemas/Alert"
+        xaiExplanation:
+          $ref: "#/components/schemas/XAIExplanation"
+        relatedTelemetry:
+          type: array
+          items:
+            $ref: "#/components/schemas/TelemetryEvent"
+        relatedTransactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        correlationPath:
+          type: array
+          items:
+            type: string
+      required: [alert, xaiExplanation, relatedTelemetry, relatedTransactions, correlationPath]
+
+    AlertFeedbackInput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [true_positive, false_positive, resolved]
+        note:
+          type: string
+      required: [status]
+
+    AlertStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        bySeverity:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        byCategory:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        byStatus:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        falsePositiveRate:
+          type: number
+        avgResolutionMinutes:
+          type: number
+        weeklyTrend:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendPoint"
+      required: [total, bySeverity, byCategory, byStatus, falsePositiveRate, avgResolutionMinutes, weeklyTrend]
+
+    XAIExplanation:
+      type: object
+      properties:
+        summary:
+          type: string
+        confidence:
+          type: number
+        riskFactors:
+          type: array
+          items:
+            $ref: "#/components/schemas/RiskFactor"
+        modelUsed:
+          type: string
+        graphFeatures:
+          type: array
+          items:
+            type: string
+        recommendedAction:
+          type: string
+      required: [summary, confidence, riskFactors, modelUsed, graphFeatures, recommendedAction]
+
+    RiskFactor:
+      type: object
+      properties:
+        factor:
+          type: string
+        weight:
+          type: number
+        description:
+          type: string
+      required: [factor, weight, description]
+
+    Correlation:
+      type: object
+      properties:
+        id:
+          type: integer
+        correlationType:
+          type: string
+          enum: [telemetry_transaction, multi_account, device_cluster, geo_anomaly, time_pattern, quantum_exposure]
+        strength:
+          type: number
+        involvedEntities:
+          type: array
+          items:
+            type: string
+        telemetryEventIds:
+          type: array
+          items:
+            type: integer
+        transactionIds:
+          type: array
+          items:
+            type: integer
+        alertId:
+          type: ["integer", "null"]
+        description:
+          type: string
+        detectedAt:
+          type: string
+      required: [id, correlationType, strength, involvedEntities, telemetryEventIds, transactionIds, description, detectedAt]
+
+    CorrelationDetail:
+      type: object
+      properties:
+        correlation:
+          $ref: "#/components/schemas/Correlation"
+        xaiExplanation:
+          $ref: "#/components/schemas/XAIExplanation"
+        graphData:
+          $ref: "#/components/schemas/GraphData"
+      required: [correlation, xaiExplanation, graphData]
+
+    GraphData:
+      type: object
+      properties:
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/GraphNode"
+        edges:
+          type: array
+          items:
+            $ref: "#/components/schemas/GraphEdge"
+      required: [nodes, edges]
+
+    GraphNode:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+          enum: [user, device, account, transaction, ip_address, alert]
+        riskScore:
+          type: number
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number
+      required: [id, label, type, riskScore, x, y, z]
+
+    GraphEdge:
+      type: object
+      properties:
+        source:
+          type: string
+        target:
+          type: string
+        weight:
+          type: number
+        edgeType:
+          type: string
+          enum: [transacted_with, accessed_from, correlated, flagged, owns]
+      required: [source, target, weight, edgeType]
+
+    QuantumRisk:
+      type: object
+      properties:
+        id:
+          type: integer
+        riskType:
+          type: string
+          enum: [harvest_now_decrypt_later, weak_cryptography, certificate_anomaly, key_exposure, quantum_channel_intercept]
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        affectedSystem:
+          type: string
+        cryptoAlgorithm:
+          type: ["string", "null"]
+        description:
+          type: string
+        mitigationRecommendation:
+          type: string
+        detectedAt:
+          type: string
+        isResolved:
+          type: boolean
+      required: [id, riskType, severity, affectedSystem, description, mitigationRecommendation, detectedAt, isResolved]
+
+    QuantumSimulation:
+      type: object
+      properties:
+        simulationId:
+          type: string
+        overallQuantumRiskScore:
+          type: number
+        vulnerableDataFlows:
+          type: integer
+        estimatedDecryptionTime:
+          type: string
+        riskByAlgorithm:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        affectedAssets:
+          type: array
+          items:
+            type: string
+        recommendedMigrations:
+          type: array
+          items:
+            type: string
+        runAt:
+          type: string
+      required: [simulationId, overallQuantumRiskScore, vulnerableDataFlows, estimatedDecryptionTime, riskByAlgorithm, affectedAssets, recommendedMigrations, runAt]
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+          enum: [alert_critical, alert_high, anomaly_detected, quantum_risk, system_message]
+        title:
+          type: string
+        message:
+          type: string
+        isRead:
+          type: boolean
+        relatedAlertId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+      required: [id, userId, type, title, message, isRead, createdAt]

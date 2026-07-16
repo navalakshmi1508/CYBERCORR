@@ -1,0 +1,711 @@
+==========================================================
+CYBERCORR – FINAL HACKATHON REFINEMENT (DO NOT REBUILD)
+==========================================================
+
+IMPORTANT:
+
+Do NOT rebuild the project.
+
+Do NOT change the architecture.
+
+Do NOT remove any existing functionality.
+
+Keep every existing feature exactly as it is.
+
+Only perform the following improvements and refinements while maintaining compatibility with the existing codebase.
+
+==========================================================
+1. APPLICATION NAME
+==========================================================
+
+Replace every occurrence of
+
+CYBERNEXUS
+
+with
+
+CYBERCORR
+
+Tagline:
+
+"Correlating Every Digital Signal Before It Becomes a Threat."
+
+Use this branding consistently across:
+
+• Login
+• Register
+• Dashboard
+• Sidebar
+• Browser title
+• Loading screen
+• Notifications
+• Reports
+• AI explanations
+• Footer
+• Documentation
+
+==========================================================
+2. CUSTOM PROFESSIONAL LOGO
+==========================================================
+
+The current logo looks generic.
+
+Design a completely original logo.
+
+DO NOT copy existing cybersecurity logos.
+
+The logo should represent
+
+Cybersecurity
++
+Correlation
++
+Banking
++
+AI Intelligence
++
+Graph Connections
+
+Concept:
+
+A circular neural graph forming a secure vault.
+
+Inside the vault is an interconnected node network.
+
+Transaction flow lines connect into a secure shield.
+
+Small AI nodes surround the shield.
+
+Use:
+
+Deep Blue
+Electric Cyan
+White
+Purple highlights
+
+It should feel like
+
+Microsoft Security
++
+Palantir
++
+Darktrace
++
+CrowdStrike
+
+The logo should look like a real startup.
+
+Use SVG so it scales perfectly.
+
+==========================================================
+3. INDIAN BANKING EXPERIENCE
+==========================================================
+
+Replace every USD value.
+
+Instead use INR.
+
+Examples
+
+₹5,000
+
+₹48,200
+
+₹2,35,000
+
+₹15,75,000
+
+Use Indian numbering format.
+
+Lakhs
+
+Crores
+
+Thousands
+
+Example formatting:
+
+₹18,500
+
+₹2.45 Lakh
+
+₹1.8 Crore
+
+Charts should display ₹.
+
+Risk calculations should remain unchanged.
+
+==========================================================
+4. ROLE DASHBOARD DIFFERENTIATION
+==========================================================
+
+The three roles currently feel almost identical.
+
+This should never happen.
+
+Every role must have its own identity.
+
+================================
+ADMIN
+================================
+
+Admin should feel like SOC Director.
+
+Dashboard includes:
+
+Global Security Overview
+
+Organization Risk Heatmap
+
+Analyst Performance
+
+System Health
+
+API Status
+
+Model Accuracy
+
+Threat Distribution
+
+Quantum Risk Summary
+
+User Management
+
+Audit Logs
+
+Infrastructure Health
+
+Live Correlation Engine
+
+Model Retraining
+
+Role Management
+
+==========================================================
+
+================================
+ANALYST
+================================
+
+Analyst should feel like Threat Hunter.
+
+Instead of directly displaying everyone's transactions,
+
+display a
+
+CUSTOMER INVESTIGATION PANEL
+
+Layout:
+
+------------------------------------------------
+Customer Search
+------------------------------------------------
+
+Search by
+
+Customer ID
+
+Account Number
+
+Name
+
+Phone
+
+Risk Score
+
+Device ID
+
+------------------------------------------------
+Customer Cards
+------------------------------------------------
+
+Display cards.
+
+Each card contains:
+
+Customer Name
+
+Customer ID
+
+Risk Score
+
+Account Status
+
+Recent Alert
+
+Device Count
+
+Location
+
+Suspicious Activities
+
+Last Transaction
+
+Current Threat Level
+
+Example:
+
+--------------------------------
+
+Ravi Kumar
+
+Customer ID:
+IND10234
+
+Risk:
+82
+
+Devices:
+3
+
+Alerts:
+5
+
+Last Login:
+Mumbai
+
+Current Status:
+High Risk
+
+[ Investigate ]
+
+--------------------------------
+
+Clicking
+
+Investigate
+
+opens a completely separate investigation page.
+
+==========================================================
+5. CUSTOMER INVESTIGATION PAGE
+==========================================================
+
+This page should feel like an FBI investigation dashboard.
+
+Display:
+
+Customer Profile
+
+Risk Meter
+
+Behaviour Timeline
+
+Transactions
+
+Login History
+
+Connected Devices
+
+Graph Relationships
+
+Known Beneficiaries
+
+Fraud Indicators
+
+Endpoint Alerts
+
+Network Alerts
+
+Authentication Events
+
+Failed Login Attempts
+
+Session Timeline
+
+AI Explanation
+
+Quantum Risk
+
+MITRE ATT&CK Mapping
+
+Recommended Actions
+
+Everything should belong ONLY to that customer.
+
+NOT every customer's data together.
+
+==========================================================
+6. STANDARD USER
+==========================================================
+
+The Standard User dashboard should look completely different.
+
+Focus on
+
+personal banking security.
+
+Show:
+
+My Accounts
+
+My Transactions
+
+My Devices
+
+Security Score
+
+Recent Login
+
+Notifications
+
+Suspicious Activity
+
+Password Health
+
+MFA Status
+
+Transaction Insights
+
+Personal AI Assistant
+
+My Alerts
+
+No organization-wide data.
+
+==========================================================
+7. 3D EXPERIENCE
+==========================================================
+
+Do NOT overuse 3D.
+
+Use tasteful premium animations.
+
+Only in important pages.
+
+Examples:
+
+Login
+
+Landing
+
+Dashboard Header
+
+Threat Visualization
+
+Graph Correlation
+
+Risk Globe
+
+Fraud Timeline
+
+SOC Overview
+
+Use:
+
+Three.js
+
+React Three Fiber
+
+GSAP
+
+Framer Motion
+
+Ideas:
+
+Animated Digital Globe
+
+AI Neural Network
+
+Floating Graph Nodes
+
+Cyber Grid
+
+Particle Network
+
+Threat Pulse
+
+Banking Network
+
+Flowing Data Streams
+
+Everything should remain lightweight.
+
+==========================================================
+8. ANALYST INVESTIGATION FLOW
+==========================================================
+
+Current:
+
+Analyst
+
+↓
+
+Transactions
+
+↓
+
+Everyone's Transactions
+
+This is NOT realistic.
+
+Replace with
+
+Customers
+
+↓
+
+Select Customer
+
+↓
+
+Customer Investigation
+
+↓
+
+Transactions
+
+↓
+
+Timeline
+
+↓
+
+Alerts
+
+↓
+
+Explanation
+
+↓
+
+Recommended Response
+
+This should mimic real SOC workflow.
+
+==========================================================
+9. BETTER TRANSACTION PAGE
+==========================================================
+
+Each customer transaction page should include:
+
+Timeline
+
+Transaction Network
+
+AI Confidence
+
+Risk Score
+
+Normal Behaviour
+
+Abnormal Behaviour
+
+Location
+
+Merchant
+
+Transaction Category
+
+Velocity
+
+Geo Distance
+
+Device Used
+
+Authentication Method
+
+Behaviour Change
+
+Correlation Events
+
+Cyber Events
+
+Fraud Probability
+
+Quantum Vulnerability
+
+Recommended Action
+
+Explainable AI
+
+==========================================================
+10. BETTER AI EXPLANATION
+==========================================================
+
+Instead of
+
+High Risk
+
+show
+
+Reasoning like
+
+Risk Score:
+91
+
+Why?
+
+✓ Login from unfamiliar device
+
+✓ New IP Address
+
+✓ Impossible Travel
+
+✓ High Value Transfer
+
+✓ Malware Alert detected
+
+✓ Endpoint anomaly
+
+✓ Certificate mismatch
+
+✓ Behaviour deviated 89%
+
+AI Confidence:
+97%
+
+Prediction:
+Likely Account Takeover
+
+==========================================================
+11. PROFESSIONAL TABLES
+==========================================================
+
+Improve all tables.
+
+Rounded cards.
+
+Hover animation.
+
+Risk colors.
+
+Expandable rows.
+
+Status chips.
+
+Mini charts.
+
+Sorting.
+
+Filtering.
+
+Export CSV.
+
+Export PDF.
+
+==========================================================
+12. PROFESSIONAL COLOR SYSTEM
+==========================================================
+
+Keep current theme.
+
+Improve consistency.
+
+Primary:
+#0B1220
+
+Accent:
+#00E5FF
+
+Purple:
+#7C4DFF
+
+Success:
+#00C853
+
+Warning:
+#FFB300
+
+Danger:
+#FF3D57
+
+Cards:
+
+Glassmorphism
+
+Blur
+
+Premium shadows
+
+==========================================================
+13. SIDEBAR
+==========================================================
+
+Role-aware sidebar.
+
+Admin sees
+
+System
+
+Analysts
+
+Users
+
+Models
+
+Audit
+
+Infrastructure
+
+Analyst sees
+
+Customers
+
+Investigations
+
+Threat Correlation
+
+Graph Analysis
+
+Quantum Monitor
+
+Fraud Detection
+
+Reports
+
+User sees
+
+Accounts
+
+Transactions
+
+Security
+
+Notifications
+
+Profile
+
+Support
+
+==========================================================
+14. HACKATHON PRESENTATION FRIENDLY
+==========================================================
+
+The UI should immediately communicate the role differences to judges.
+
+Within 10 seconds, a judge should clearly understand:
+
+Admin manages the platform.
+
+Analyst investigates customers individually.
+
+Standard User monitors only personal banking security.
+
+Avoid any confusion between roles.
+
+==========================================================
+15. DO NOT BREAK EXISTING SYSTEM
+==========================================================
+
+Keep all APIs.
+
+Keep authentication.
+
+Keep backend.
+
+Keep AI engine.
+
+Keep database.
+
+Keep correlation engine.
+
+Keep quantum simulation.
+
+Keep notifications.
+
+Keep reports.
+
+Only improve UX, branding, role separation, investigation workflow, Indian banking localization, and visual polish.
+
+The final result should feel like a production-grade cybersecurity intelligence platform built for a national bank and polished to hackathon-winning standards.

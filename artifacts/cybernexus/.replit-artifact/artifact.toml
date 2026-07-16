@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "CyberNexus AI"
+version = "1.0.0"
+id = "artifacts/cybernexus"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18349
+
+[services.development]
+run = "pnpm --filter @workspace/cybernexus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cybernexus", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cybernexus/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18349"
+BASE_PATH = "/"
