@@ -35,7 +35,7 @@ export const transactionsTable = pgTable("transactions", {
   accountId: text("account_id").notNull(),
   transactionType: transactionTypeEnum("transaction_type").notNull(),
   amount: real("amount").notNull(),
-  currency: text("currency").notNull().default("USD"),
+  currency: text("currency").notNull().default("INR"),
   merchantName: text("merchant_name"),
   merchantCategory: text("merchant_category"),
   riskScore: real("risk_score").notNull().default(0),

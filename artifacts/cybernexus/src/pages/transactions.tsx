@@ -9,7 +9,8 @@ import { IndianRupee, AlertCircle, Activity, BrainCircuit, X, Network, TrendingU
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, Cell } from "recharts";
 
 /** Format amount as INR with Indian numbering */
-function formatINR(amount: number): string {
+function formatINR(amount: number | undefined | null): string {
+  if (amount == null || isNaN(amount)) return '₹—';
   if (amount >= 10_000_000) return `₹${(amount / 10_000_000).toFixed(2)} Cr`;
   if (amount >= 100_000) return `₹${(amount / 100_000).toFixed(2)} L`;
   if (amount >= 1_000) return `₹${amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;

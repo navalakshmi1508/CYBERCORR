@@ -138,7 +138,7 @@ router.get("/dashboard/activity", requireAuth, async (_req, res) => {
     ...transactions.map((t, i) => ({
       id: alerts.length + i + 1,
       type: "anomaly_detected",
-      title: `Anomalous ${t.transactionType} - $${t.amount.toFixed(2)}`,
+      title: `Anomalous ${t.transactionType} - ₹${t.amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`,
       description: t.anomalyReasons[0] || "Suspicious transaction pattern detected",
       severity: t.riskScore > 80 ? "critical" : t.riskScore > 60 ? "high" : "medium",
       timestamp: t.timestamp.toISOString(),
